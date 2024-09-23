@@ -1,0 +1,34 @@
+Exemplo sem IoC (problema):
+
+public class RelatorioService {
+    private RelatorioRepository repository;
+
+    public RelatorioService() {
+        this.repository = new RelatorioRepository(); // A classe cria sua própria dependência
+    }
+
+    public void gerarRelatorio() {
+        repository.obterDados();
+        // Lógica para gerar relatório
+    }
+}
+
+
+Exemplo com IoC (solução):
+
+public class RelatorioService {
+    private RelatorioRepository repository;
+
+    // Dependência injetada via construtor
+    public RelatorioService(RelatorioRepository repository) {
+        this.repository = repository;
+    }
+
+    public void gerarRelatorio() {
+        repository.obterDados();
+        // Lógica para gerar relatório
+    }
+}
+
+Agora, a classe RelatorioService não cria o RelatorioRepository diretamente, mas espera que seja fornecido a ela. 
+Isso permite que diferentes implementações de RelatorioRepository sejam usadas.

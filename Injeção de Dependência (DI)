@@ -1,0 +1,43 @@
+Injeção via Construtor:
+Aqui, as dependências são fornecidas diretamente no momento da criação da classe.
+
+public class RelatorioService {
+    private final RelatorioRepository repository;
+
+    // Injeção via construtor
+    public RelatorioService(RelatorioRepository repository) {
+        this.repository = repository;
+    }
+
+    public void gerarRelatorio() {
+        repository.obterDados();
+    }
+}
+
+// Exemplo de uso:
+RelatorioRepository repo = new RelatorioRepository();
+RelatorioService service = new RelatorioService(repo);
+
+
+Injeção via Propriedades:
+Aqui, as dependências são configuradas após a criação do objeto.
+
+public class RelatorioService {
+    private RelatorioRepository repository;
+
+    // Construtor padrão
+    public RelatorioService() {}
+
+    // Método setter para injetar a dependência
+    public void setRepository(RelatorioRepository repository) {
+        this.repository = repository;
+    }
+
+    public void gerarRelatorio() {
+        repository.obterDados();
+    }
+}
+
+// Exemplo de uso:
+RelatorioService service = new RelatorioService();
+service.setRepository(new RelatorioRepository());

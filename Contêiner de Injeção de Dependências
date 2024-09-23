@@ -1,0 +1,29 @@
+Frameworks como Spring usam contêineres para gerenciar a criação e injeção automática de dependências.
+Veja um exemplo simples de como isso funciona no Spring.
+
+
+// Definindo uma classe como um "bean" do Spring usando a anotação @Component
+@Component
+public class RelatorioRepository {
+    public void obterDados() {
+        // Busca dados para o relatório
+    }
+}
+
+@Component
+public class RelatorioService {
+    private final RelatorioRepository repository;
+
+    // Injeção via construtor
+    @Autowired
+    public RelatorioService(RelatorioRepository repository) {
+        this.repository = repository;
+    }
+
+    public void gerarRelatorio() {
+        repository.obterDados();
+    }
+}
+
+
+Neste exemplo, o Spring automaticamente cria as instâncias e injeta a dependência RelatorioRepository no RelatorioService.

@@ -1,0 +1,2 @@
+The @RestController annotation is a specialization of the @Controller annotation,
+with the added behavior that the return value of each method is automatically serialized into JSON and passed back into the HttpServletResponse object.

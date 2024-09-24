@@ -1,0 +1,21 @@
+
+Singleton: O Spring cria apenas uma instância de RelatorioService e a reutiliza em todo o sistema.
+Prototype: Uma nova instância de RelatorioService é criada toda vez que for solicitada.
+
+Por padrão, o Spring usa Singleton, mas você pode definir um escopo Prototype assim:
+
+@Component
+@Scope("prototype")
+public class RelatorioService {
+    private final RelatorioRepository repository;
+
+    @Autowired
+    public RelatorioService(RelatorioRepository repository) {
+        this.repository = repository;
+    }
+
+    // Métodos...
+}
+
+
+Neste caso, toda vez que o RelatorioService for solicitado ao contêiner do Spring, uma nova instância será criada.

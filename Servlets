@@ -1,0 +1,6 @@
+The HTTP servlet API is based on two main abstract types:
+
+-> HttpServlet - responsible for ultimately handling an HTTP request by populating an HttpServletResponse using information from a HttpServletRequest.
+
+-> HttpFilter - contributes to the handling of HTTP responses, by using the request’s information, present in an HttpServletResponse instance,
+and eventually mutating an HttpServletResponse before and after the request is handled by a server. Multiple filters are organized in a pipeline.

@@ -1,0 +1,22 @@
+An Interceptor in Spring MVC is used to intercept incoming HTTP requests before they reach the controller and after the response is generated.
+It's commonly used for cross-cutting concerns such as logging, authentication, authorization, and request modification.
+Interceptors provide fine-grained control over request processing and are integrated into the Spring MVC request handling lifecycle.
+
+Use Cases for an Interceptor:
+
+-> Logging: You can log incoming requests, controller names, method names, and outgoing responses.
+
+-> Authentication & Authorization: Validate whether a user has access to specific resources.
+
+-> Performance Monitoring: Measure request processing time for performance analysis.
+
+-> Modifying Requests and Responses: Alter requests and responses before reaching the controller or before sending the response back.
+
+
+Interceptor Workflow:
+
+-> preHandle: Called before the actual controller method is invoked. You can decide whether to allow the request to proceed or not by returning true or false.
+
+-> postHandle: Called after the controller method has been executed but before the view is rendered.
+
+-> afterCompletion: Called after the request has been completed and the view is rendered. Useful for resource cleanup or logging.

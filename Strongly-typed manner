@@ -1,0 +1,50 @@
+A strongly-typed manner refers to a programming approach where the types of variables, function parameters,
+and return values are explicitly defined and enforced by the programming language at compile-time.
+This ensures that the values being used conform strictly to their declared types, reducing the risk of errors such as type mismatches.
+
+
+Key Characteristics of Strong Typing:
+
+-> Type Enforcement: The type of a variable or method argument must match its declared type.
+    If you declare a variable as an Int, you cannot assign a String to it.
+
+-> Type Checking at Compile Time: Many programming languages that are strongly-typed (e.g., Kotlin, Java)
+    check the types at compile time, which helps prevent runtime errors by catching issues early.
+
+-> Prevents Implicit Type Conversions: Strongly-typed languages usually do not allow implicit type conversions between different data types
+    unless explicitly done by the programmer (using casting, for example).
+
+Example in Context:
+  In your original code, without using strong typing, the language variable in the HelloController was a String 
+    representing the language from the Accept-Language header. 
+      If an unexpected value or format was received, it could potentially cause issues at runtime.
+
+=================================
+@GetMapping
+fun greet(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, defaultValue = "en") language: String): ResponseEntity<String> {
+    val greeting = greetingService.greet(language)
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_LANGUAGE, language)
+        .body(greeting)
+}
+=================================
+
+In contrast, by implementing a custom HandlerMethodArgumentResolver, you can extract the language as a Locale object directly.
+This is a strongly-typed approach because now you're dealing with a well-defined Locale class instead of a raw String,
+which provides more meaningful structure and behavior.
+
+=================================
+@GetMapping
+fun greet(locale: Locale): ResponseEntity<String> {
+    val greeting = greetingService.greet(locale.language)
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_LANGUAGE, locale.language)
+        .body(greeting)
+}
+=================================
+
+Note:
+-> locale: Locale is a strongly-typed parameter.
+
+-> It gives you compile-time type safety, since the Locale type provides methods and structure specific to locale settings
+    (like .language, .country, etc.), making your code safer and more predictable.

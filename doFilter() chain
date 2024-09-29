@@ -1,0 +1,8 @@
+Code : chain.doFilter(request, response)
+
+   This is crucial for allowing the request to proceed to the next filter or the target servlet (such as the Spring controller).
+  
+When you call chain.doFilter(), the request is passed down the filter chain, and after all filters are processed,
+  it reaches the target controller method that handles the request.
+This call is what actually allows the HTTP request to be processed.
+  Without this line, the request would be blocked, and the client would never get a response.

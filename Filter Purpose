@@ -1,0 +1,10 @@
+This filter’s purpose is to log details about every HTTP request and the time it took to process it. 
+
+This is extremely useful for:
+
+-> Performance Monitoring: By logging the request processing time (duration), you can identify slow requests and measure the performance of your application.
+
+-> Debugging: Logging the method, URI, and status code of each request helps trace the flow of requests through the system, 
+    especially when troubleshooting errors.
+
+-> Auditing: This logging can serve as an audit trail, tracking what requests were made to the server and how the server responded to them.

@@ -1,0 +1,2 @@
+An handler method is an instance method inside a controller class, annotated with @RequestMapping or @GetMapping, @PostMapping, etc;
+The same handler can be called concurrently by multiple threads, since each request is handled by a different thread;

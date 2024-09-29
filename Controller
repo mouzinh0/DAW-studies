@@ -1,0 +1,3 @@
+A controller is a class annotated with @Controller or @RestController that contains request handling methods;
+A controller is singleton by default, this means that the same instance is used for all requests;
+This happens because the Spring MVC follows the Singleton pattern, that ensures only one instance of an object exists per application.

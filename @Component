@@ -1,0 +1,3 @@
+@Component: This annotation is a Spring stereotype that indicates this class is a Spring-managed bean.
+By using @Component, Spring will automatically detect and register this filter as a bean during the component scanning process. 
+This is how the filter becomes part of the Spring context.

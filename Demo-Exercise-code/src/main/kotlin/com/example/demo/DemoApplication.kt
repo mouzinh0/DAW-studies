@@ -1,11 +1,7 @@
-package com.example.demo
-
 import jakarta.servlet.*
 import jakarta.servlet.http.HttpFilter
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.apache.tomcat.util.http.parser.AcceptLanguage
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Configuration
@@ -27,48 +23,56 @@ import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.util.*
+// SLF4J logging
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 
 @SpringBootApplication
 class DemoApplication
 
 
-
 fun main(args: Array<String>) {
 	runApplication<DemoApplication>(*args)
 }
 
+// Initialize the logger
+private val logger: Logger = LoggerFactory.getLogger(LocaleArgumentResolver::class.java)
+
+// First simple implementation
 /*@RestController
 class HelloController {
 	@GetMapping("/hello")
 	fun greet(): String {
-		return "Hello, world!"vm
+		return "Hello, world!"
 	}
 }*/
 
-// curl -X GET http://localhost:8080/hello
-
+// Without last implementation
 /*@RestController
 @RequestMapping("/hello")
-class HelloController(@Autowired val greetingService: GreetingService) {
-
+class HelloController(val greetingService: GreetingService) {
+// Handler (GET)
 	@GetMapping
 	fun greet(@RequestHeader(name = HttpHeaders.ACCEPT_LANGUAGE, defaultValue = "en") language: String): ResponseEntity<String> {
 		val greeting = greetingService.greet(language)
-		return ResponseEntity.ok()
+		return ResponseEntity.ok()  // 200
 			.header(HttpHeaders.CONTENT_LANGUAGE, language)
 			.body(greeting)
 	}
 }*/
 
+// curl -X GET http://localhost:8080/hello
+// Controller -> Dependency in greetingService via constructor injection
+// Don't need @Autowired val greetingService because is one constructor
 @RestController
 @RequestMapping("/hello")
-class HelloController(@Autowired val greetingService: GreetingService) {
-
+class HelloController(val greetingService: GreetingService) {
+	// Handler (GET)
 	@GetMapping
 	fun greet(locale: Locale): ResponseEntity<String> {
 		val greeting = greetingService.greet(locale.language)
-		return ResponseEntity.ok()
+		return ResponseEntity.ok()	// 200
 			.header(HttpHeaders.CONTENT_LANGUAGE, locale.language)
 			.body(greeting)
 	}
@@ -116,7 +120,7 @@ class RequestLoggingFilter : HttpFilter() {
 }
 
 // Handler Interceptor to set Controller information and log it
-
+// Executed before the request reaches the controller
 @Component
 class LoggingInterceptor : HandlerInterceptor {
 	override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
@@ -138,10 +142,7 @@ class LoggingInterceptor : HandlerInterceptor {
 			 println("Controller: $controllerName, Method: $methodName")
 
 		 }
-
-		//fun getFromAttributes(request: HttpServletRequest): HandlerMethod? = request.getAttribute(KEY) as? HandlerMethod
 	}
-
 }
 
 // Registers Interceptor
@@ -155,16 +156,17 @@ class WebConfig(private val loggingInterceptor: LoggingInterceptor) : WebMvcConf
 
 @Configuration
 class WebConfig(
-	private val loggingInterceptor: LoggingInterceptor,
-	private val localeArgumentResolver: LocaleArgumentResolver
+	private val loggingInterceptor: LoggingInterceptor
 ) : WebMvcConfigurer {
 
 	override fun addInterceptors(registry: InterceptorRegistry) {
+		logger.info("Adding InterceptorRegistry to the list")
 		registry.addInterceptor(loggingInterceptor)
 	}
 
 	override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
-		resolvers.add(localeArgumentResolver)
+		logger.info("Adding LocaleArgumentResolver to the list")
+		resolvers.add(LocaleArgumentResolver())
 	}
 }
 
@@ -178,7 +180,11 @@ class WebConfig(
 @Component
 class LocaleArgumentResolver : HandlerMethodArgumentResolver {
 
+
+	// Ensures that this argument resolver only works for controller method parameters
+	// that are expecting a Locale object, not String, Int etc
 	override fun supportsParameter(parameter: MethodParameter): Boolean {
+		logger.info("Checking parameter: {}", parameter.parameterType)
 		// Check if the parameter is of type Locale
 		return parameter.parameterType == Locale::class.java
 	}
@@ -190,7 +196,7 @@ class LocaleArgumentResolver : HandlerMethodArgumentResolver {
 		binderFactory: WebDataBinderFactory?
 	): Any? {
 		val languageTag = webRequest.getHeader(HttpHeaders.ACCEPT_LANGUAGE) ?: "en"
+		logger.info("Resolved language tag: {}", languageTag)
 		return Locale.forLanguageTag(languageTag)
 	}
 }
-

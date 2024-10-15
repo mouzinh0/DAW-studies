@@ -34,3 +34,12 @@ Restart the container:
 ```
 docker start my-postgres
 ```
+
+Some more:
+```
+docker run -it im-project-db-tests /bin/bash
+
+docker exec -it db-tests /bin/bash
+
+ls /app/bin/wait-for-postgres.sh
+```

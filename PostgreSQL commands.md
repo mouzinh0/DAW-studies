@@ -42,4 +42,7 @@ docker run -it im-project-db-tests /bin/bash
 docker exec -it db-tests /bin/bash
 
 ls /app/bin/wait-for-postgres.sh
+
+docker exec -it db-tests printenv POSTGRES_PASSWORD
+
 ```

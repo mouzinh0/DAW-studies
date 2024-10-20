@@ -4,4 +4,4 @@
 
 * timestamp: The timestamp type (or timestamptz for timezone-aware) is PostgreSQL's dedicated type for storing date-time values. It's more readable and provides automatic formatting and timezone handling if necessary.
 
-* 
+

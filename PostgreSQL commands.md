@@ -55,3 +55,9 @@ ls /app/bin/wait-for-postgres.sh
 docker exec -it db-tests psql -U <user> -d db
 
 ```
+
+Rebuild the Database Container: Force Docker to reload the initialization SQL files by running:
+```
+docker-compose down
+docker-compose up --build
+```

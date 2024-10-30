@@ -61,3 +61,18 @@ Rebuild the Database Container: Force Docker to reload the initialization SQL fi
 docker-compose down
 docker-compose up --build
 ```
+Build Ignoring tests:
+```
+gradlew build -x test
+```
+Run Project:
+```
+java -jar IM-Project-0.0.1-SNAPSHOT.jar
+```
+
+
+
+
+
+
+
